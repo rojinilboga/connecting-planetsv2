@@ -1,12 +1,10 @@
 import pgzrun
 from random import randint
 from time import time
-
-WIDHT = 800
-HEIGHT = 600
-
-
 TITLE = "Connecting the planets"
+
+WIDTH = 800
+HEIGHT = 600
 
 #declearing variables
 planets = []
@@ -23,12 +21,13 @@ def create_planets():
     global start_time
     for count in range(0,number_of_planets):
         planet = Actor("planet")
-        planet.pos = randint(40, WIDHT - 40), randint(40, HEIGHT - 40)
+        planet.pos = randint(40, WIDTH - 40), randint(40, HEIGHT - 40)
         planets.append(planet)
     start_time = time()
 
 def draw():
     global total_time
+    screen.blit("stars",(0,0))
     number = 1
     for planet in planets:
         screen.draw.text(str(number), (planet.pos[0], planet.pos[1] + 25))
@@ -44,7 +43,29 @@ def draw():
     else:
         screen.draw.text(str(round(total_time, 1)), (10,10), fontsize = 30)
 
+def update():
+    pass
+
+def on_mouse_down(pos):
+    global next_planet, lines
+
+    if next_planet < number_of_planets:
+        if planets[next_planet].collidepoint(pos):
+            if next_planet:
+                lines.append(
+                    (planets[next_planet - 1].pos, planets[next_planet].pos)
+                )
+            next_planet = next_planet +1
+        else:
+            lines = [] 
+            next_planet = 0
+        
+
+
+
+
 create_planets()
 pgzrun.go()
+    
     
     
